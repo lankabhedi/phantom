@@ -1,120 +1,168 @@
 <![CDATA[<div align="center">
 
-# 👻 PHANTOM
+<img src="https://img.shields.io/badge/👻-PHANTOM-000000?style=for-the-badge&labelColor=000000&color=39FF14" alt="PHANTOM" />
 
-### Automated Satellite-Based Infrastructure Audit System
+<br/>
 
-[![License](https://img.shields.io/badge/License-All%20Rights%20Reserved-red.svg)](#license)
-[![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://python.org)
-[![AMD Ryzen AI](https://img.shields.io/badge/AMD-Ryzen%20AI-orange.svg)](https://www.amd.com/en/products/processors/consumer/ryzen-ai.html)
+# PHANTOM
 
-*Bridging the gap between government infrastructure claims and ground reality using satellite imagery and on-device AI.*
+**Satellite-Powered Ghost Infrastructure Detection**
+
+<br/>
+
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
+[![PyTorch](https://img.shields.io/badge/PyTorch-U--Net-EE4C2C?style=flat-square&logo=pytorch&logoColor=white)](https://pytorch.org)
+[![AMD Ryzen AI](https://img.shields.io/badge/AMD-Ryzen%20AI%20NPU-ED1C24?style=flat-square&logo=amd&logoColor=white)](https://www.amd.com)
+[![Sentinel-2](https://img.shields.io/badge/ESA-Sentinel--2-003399?style=flat-square&logo=data:image/svg+xml;base64,&logoColor=white)](https://sentinel.esa.int)
+[![License](https://img.shields.io/badge/license-All%20Rights%20Reserved-red?style=flat-square)](LICENSE)
+
+<br/>
+
+*Every year, billions in public infrastructure funds vanish into projects that exist only on paper.*
+*PHANTOM finds them.*
+
+<br/>
+
+---
 
 </div>
 
----
+<br/>
 
-## 🔍 The Problem
+## The Problem
 
-Government infrastructure projects in remote regions (e.g., PMGSY roads in Meghalaya) are often marked as "complete" in official records — but **do not physically exist**. Manual auditing is slow, expensive, and easily manipulated.
+India's **PMGSY** (Pradhan Mantri Gram Sadak Yojana) has sanctioned over **₹2.7 lakh crore** for rural roads. In remote states like Meghalaya, some roads are marked **"100% complete"** in government databases — but **don't physically exist**.
 
-## 💡 The Solution
+Traditional audits require inspectors to travel to dangerous, inaccessible terrain. They're slow, expensive, and easily falsified with staged photographs.
 
-PHANTOM is an **edge-AI powered audit system** that automatically:
-1. **Scrapes** government procurement portals for project claims and GPS coordinates.
-2. **Downloads** corresponding Sentinel-2 satellite imagery via the STAC API.
-3. **Detects** physical road presence using a U-Net CV model running on the AMD Ryzen AI NPU.
-4. **Flags** discrepancies between claims and reality on an interactive evidence dashboard.
+**There is no scalable way to verify if a road was actually built.**
 
----
+<br/>
 
-## 🏗️ Project Structure
+## How PHANTOM Works
+
+```
+┌─────────────────┐     ┌──────────────────┐     ┌─────────────────┐     ┌──────────────────┐
+│  📋 SCRAPER     │────▶│  🛰️ SATELLITE    │────▶│  🧠 CV ENGINE   │────▶│  🗺️ DASHBOARD   │
+│                 │     │                  │     │                 │     │                  │
+│ PMGSY Portal    │     │ Sentinel-2 STAC  │     │ U-Net + AMD NPU │     │ Leaflet.js Map   │
+│ Project Claims  │     │ Multi-spectral   │     │ Road Detection  │     │ Evidence Overlay  │
+│ GPS Coordinates │     │ Cloud-free Tiles │     │ Spatial Masking │     │ Discrepancy Tiers│
+└─────────────────┘     └──────────────────┘     └─────────────────┘     └──────────────────┘
+```
+
+<br/>
+
+### The Audit Trail
+
+| What You See | What It Means |
+|:---:|:---|
+| ⚪ **Dashed White Line** | The road the government *claims* was built ("Ghost Line") |
+| 🟢 **Neon Green Overlay** | The road the AI *actually detected* from satellite imagery |
+| 🔴 **Red Marker** | PHANTOM Project — claim exists, road does not |
+| 🟡 **Amber Marker** | Uncertain — partial construction or low confidence |
+| 🟢 **Green Marker** | Verified — road matches the claim |
+
+<br/>
+
+## Why AMD Ryzen AI
+
+PHANTOM doesn't use the cloud. It runs **entirely on-device**.
+
+| | Cloud-Based Audit | PHANTOM (Edge AI) |
+|---|:---:|:---:|
+| **Privacy** | Audit data on third-party servers | Never leaves your laptop |
+| **Connectivity** | Requires high-speed internet | Works offline in the field |
+| **Cost** | GPU compute bills per inference | $0 after hardware |
+| **Latency** | Minutes per tile (queue + upload) | Seconds per tile (NPU) |
+
+The AMD Ryzen AI **XDNA NPU** handles the heavy semantic segmentation workload while keeping power consumption low enough for battery-powered fieldwork in remote Meghalaya.
+
+<br/>
+
+## Project Structure
 
 ```
 PHANTOM/
-├── scraper/              # PMGSY procurement data scraper (Playwright)
-│   └── pmgsy_scraper.py
-├── satellite/            # Sentinel-2 imagery downloader (STAC API)
-│   └── downloader.py
-├── cv/                   # Computer Vision pipeline
-│   ├── model.py          # U-Net (ResNet-34) architecture
-│   └── inference.py      # On-device inference with spatial masking
-├── core/                 # Business logic
-│   └── scoring.py        # Discrepancy scoring engine (RED/AMBER/GREEN)
-├── web/                  # Interactive audit dashboard
-│   ├── index.html        # Leaflet.js dark-themed UI
-│   └── app.js            # Map rendering, overlays, and popups
-├── data/                 # Generated data artifacts
-│   ├── raw_projects.json
-│   ├── verified_projects.json
-│   └── satellite_images/
-├── tests/                # Unit tests
-├── requirements.txt      # Python dependencies
+│
+├── scraper/
+│   └── pmgsy_scraper.py        # Playwright-based procurement scraper
+│
+├── satellite/
+│   └── downloader.py           # STAC API → Sentinel-2 imagery
+│
+├── cv/
+│   ├── model.py                # U-Net (ResNet-34 encoder)
+│   └── inference.py            # Spatial-masked road detection
+│
+├── core/
+│   └── scoring.py              # RED / AMBER / GREEN classification
+│
+├── web/
+│   ├── index.html              # Dark-themed dashboard UI
+│   └── app.js                  # Map layers, overlays, popups
+│
+├── data/
+│   ├── raw_projects.json       # Scraped project metadata
+│   ├── verified_projects.json  # Scored audit results
+│   └── satellite_images/       # GeoTIFFs and detection masks
+│
+├── requirements.txt
+├── LICENSE
 └── README.md
 ```
 
----
+<br/>
 
-## ⚙️ Tech Stack
-
-| Layer | Technology |
-|---|---|
-| **AI/ML** | PyTorch, Segmentation Models PyTorch (U-Net + ResNet-34), OpenCV |
-| **Geospatial** | Rasterio, PyStac, Rioxarray, Stackstac, Sentinel-2 L2A |
-| **Scraping** | Playwright |
-| **Dashboard** | Leaflet.js, HTML5, Vanilla JS |
-| **Hardware** | AMD Ryzen AI (XDNA NPU) |
-
----
-
-## 🚀 Quick Start
+## Quick Start
 
 ```bash
-# Clone the repository
 git clone git@github.com:lankabhedi/phantom.git
 cd phantom
 
-# Create virtual environment
-python3 -m venv venv
-source venv/bin/activate
-
-# Install dependencies
+python3 -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
 playwright install
 
-# Run the full pipeline
+# Run the audit pipeline
 export PYTHONPATH=$PYTHONPATH:.
-python3 cv/inference.py
-python3 core/scoring.py
+python3 cv/inference.py       # Detect roads in satellite imagery
+python3 core/scoring.py       # Score and classify discrepancies
 
-# Launch the dashboard
+# Launch dashboard
 python3 -m http.server 8000
-# Visit http://localhost:8000/web/index.html
+# → http://localhost:8000/web/index.html
 ```
 
+<br/>
+
+## Tech Stack
+
+| Layer | Tools |
+|---|---|
+| **Computer Vision** | PyTorch · Segmentation Models PyTorch · OpenCV |
+| **Geospatial** | Rasterio · PyStac · Rioxarray · Stackstac · Sentinel-2 L2A |
+| **Scraping** | Playwright (Headless Chromium) |
+| **Frontend** | Leaflet.js · Vanilla JS · HTML5 |
+| **Hardware** | AMD Ryzen AI · XDNA NPU |
+
+<br/>
+
+## Hackathon
+
+Built for **AMD Slingshot** under the themes:
+- 🌍 **AI for Social Good** — Accountability for public infrastructure
+- 🚀 **Open Innovation** — Edge-first AI on consumer hardware
+
+<br/>
+
 ---
 
-## 📊 Dashboard Features
+<div align="center">
 
-- **Dark Mode & Satellite Toggle** — Switch between sleek dark tiles and high-res satellite imagery.
-- **Ghost Lines** — Dashed white polylines showing the government's *claimed* road path.
-- **Built Highlights** — Precision neon-green AI overlay showing what *actually* exists.
-- **Discrepancy Tiers** — Projects flagged as 🟢 Verified, 🟡 Uncertain, or 🔴 PHANTOM.
+**PHANTOM** · Built with 🔥 for AMD Slingshot
 
----
+*All Rights Reserved · See [LICENSE](LICENSE)*
 
-## 🎯 AMD Ryzen AI Integration
-
-PHANTOM leverages the AMD Ryzen AI NPU for:
-- **Privacy** — Sensitive audit data never leaves the edge device.
-- **Offline Capability** — Field auditors in remote areas can run verifications without internet.
-- **Efficiency** — Low-power inference on battery for extended fieldwork.
-
----
-
-## 📜 License
-
-**All Rights Reserved.** See [LICENSE](LICENSE) for details.
-
-This software may not be copied, modified, or distributed without prior written consent.
+</div>
 ]]>
