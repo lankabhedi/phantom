@@ -1,0 +1,24 @@
+[
+    {
+        "id": "MG01III028",
+        "name": "T09-Chotcholja to Nelwa Guarechol",
+        "lat": 25.8852434,
+        "lon": 90.8718331,
+        "start_lat": 25.885,
+        "start_lon": 90.871,
+        "end_lat": 25.886,
+        "end_lon": 90.873,
+        "status": "In Progress",
+        "cost": "\u20b9 15.2 Lakhs",
+        "cv_score": 0.15,
+        "tier": "RED",
+        "label": "PHANTOM",
+        "bbox": [
+            25.87522993040315,
+            90.86172525498485,
+            25.895310521688444,
+            90.88184463518186
+        ],
+        "discrepancy": 0.85
+    }
+]

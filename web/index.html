@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHANTOM - Infrastructure Audit Heatmap</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; background: #0f0f1a; color: #fff; }
+        #map { height: 100vh; width: 100%; }
+        .sidebar {
+            position: absolute; top: 20px; left: 20px; width: 350px; 
+            background: rgba(20, 20, 35, 0.9); backdrop-filter: blur(10px);
+            z-index: 1000; padding: 20px; border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        h1 { margin: 0 0 10px; font-size: 24px; color: #a29bfe; }
+        p { font-size: 14px; opacity: 0.8; }
+        .legend { margin-top: 20px; }
+        .legend-item { display: flex; align-items: center; margin-bottom: 8px; font-size: 13px; }
+        .dot { width: 12px; height: 12px; border-radius: 50%; margin-right: 10px; }
+        .red { background: #ff7675; }
+        .amber { background: #fdcb6e; }
+        .green { background: #55efc4; }
+        .stats { margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .stat-card { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; text-align: center; }
+        .stat-value { font-size: 20px; font-weight: bold; display: block; }
+        .stat-label { font-size: 11px; opacity: 0.6; text-transform: uppercase; }
+        .project-popup { color: #000; }
+        .project-popup img { width: 100%; border-radius: 4px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h1>👁 PHANTOM</h1>
+        <p>Satellite-based Infrastructure Audit Dashboard<br>Meghalaya, India</p>
+        
+        <div class="stats">
+            <div class="stat-card">
+                <span class="stat-value" id="stat-total">0</span>
+                <span class="stat-label">Total Audited</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value" style="color: #ff7675;" id="stat-phantom">0</span>
+                <span class="stat-label">Phantom (RED)</span>
+            </div>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item"><div class="dot green"></div> Verified (Road Detected)</div>
+            <div class="legend-item"><div class="dot amber"></div> Uncertain (Low Confidence)</div>
+            <div class="legend-item"><div class="dot red"></div> PHANTOM (No Road Detected)</div>
+        </div>
+    </div>
+    
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
