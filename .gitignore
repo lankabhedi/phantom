@@ -1,5 +1,21 @@
+# Virtual Environment
 venv/
+
+# Python Cache
 __pycache__/
 *.pyc
+*.pyo
+
+# Environment
 .env
 .DS_Store
+
+# AMD Slingshot Submission Files (Private)
+AMD Slingshot Files/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
